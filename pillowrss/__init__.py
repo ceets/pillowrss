@@ -1,0 +1,1 @@
+"""pillowrss package."""
