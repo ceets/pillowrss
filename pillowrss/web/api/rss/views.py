@@ -10,10 +10,10 @@ async def get_rss(
     community_name: str,
 ) :
     """
-    Sends echo back to user RSS.
+    RSS-ify community on Pillowfort with Atom format
 
-    :param incoming_message: incoming message.
-    :returns: message same as the incoming.
+    :param community_name: Pillowfort community.
+    :returns: atom.xml file.
     """
 
     res = requests.get(
