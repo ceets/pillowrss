@@ -1,7 +1,7 @@
 import json
 import requests
 from fastapi import APIRouter, HTTPException, Response
-
+import datetime
 router = APIRouter()
 
 
@@ -30,24 +30,21 @@ async def get_rss(
     ) -> str:
         return f"""
         <entry>
-        <updated>2026-02-23T19:13:49.830Z</updated>
+        <updated>{update_date}</updated>
         <author><name>{username}</name></author>
         <content>
             <![CDATA[{content}]]>
         </content>
-        <id>
-        {url}
-        </id>
+        <id>{url}</id>
         <link href="{url}"/>
         <published>{publish_date}</published>
         <summary>
             <![CDATA[{content[:5000]}]]>
         </summary>
         <title>{title}</title>
-        <updated>{update_date}</updated>
         </entry>"""
 
-    xml_content = """<?xml version="1.0" encoding="UTF-8"?>"""
+    xml_content = f"""<?xml version="1.0" encoding="UTF-8"?>"""
     entries = ""
     for item in response:
         title = item["title"] if item["title"] else ""
@@ -59,10 +56,10 @@ async def get_rss(
             item["publish_at"],
             item["updated_at"],
         )
-    feed = f"""<feed  xmlns="http://www.w3.org/2005/Atom">
+    feed = f"""<feed  xmlns="http://www.w3.org/2005/Atom"><updated>{datetime.datetime.now(datetime.timezone.utc).isoformat()}</updated>
         <author><name>Pillowfort</name></author>
-        <id>https://pillow-rss.ceets-deets.vip/</id>
-        <link href="https://pillow-rss.ceets-deets.vip/api/sdfsdfsdf/atom.xml" rel="self"/>
+        <id>https://pillowrss.ceets.vip/</id>
+        <link href="https://pillowrss.ceets.vip/api/{community_name}/atom.xml" rel="self"/>
         <rights>All rights reserved 2026, Pillowfort LLC</rights>
         <subtitle><![CDATA[<a href="https://pillowfort.social/donations">Help Pillowfort keep the lights on</a>]]></subtitle>
         <title>Pillowfort feed - '{community_name}'</title>
